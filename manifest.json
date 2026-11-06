@@ -1,8 +1,0 @@
-{
-  "name": "PrintEase",
-  "short_name": "PrintEase",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#fff8fb",
-  "theme_color": "#36002d"
-}
