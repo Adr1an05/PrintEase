@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#36002d">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<title>PrintEase | Printing Orders & Transactions</title>
+<style>
+:root{--primary:#36002d;--primary2:#5a0a4d;--accent:#c44a91;--pink:#f8cde2;--bg:#fff8fb;--card:#fff;--text:#251821;--muted:#766873;--line:#eadde5;--success:#16723a;--warning:#a15c00}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+#loginPage{min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(135deg,#36002d,#8d276c)}
+.login{width:410px;max-width:100%;background:#fff;border-radius:24px;padding:34px;box-shadow:0 25px 60px #0006}
+.brand{text-align:center;font-size:30px;font-weight:800;color:var(--primary)}.brand span{color:var(--accent)}
+.login h2{text-align:center;margin:22px 0 6px}.login p{text-align:center;color:var(--muted);font-size:14px}.field{margin:15px 0}.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px #c44a9120}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 15px;font-weight:600;color:var(--text)}.btn:hover{transform:translateY(-1px)}.primary{background:var(--primary);border-color:var(--primary);color:#fff}.pink{background:var(--accent);color:#fff;border-color:var(--accent)}.danger{color:#b42318}.full{width:100%}
+.msg{font-size:13px;padding:10px;border-radius:9px;margin:12px 0}.error{background:#fff0f0;color:#b42318}.success{background:#eefbf3;color:#16723a}
+.app{min-height:100vh}.top{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:10}
+.logo{font-size:24px;font-weight:800;color:var(--primary)}.logo span{color:var(--accent)}.user{font-size:14px;color:var(--muted)}.layout{display:flex;min-height:calc(100vh - 68px)}
+.side{width:245px;background:#fff;border-right:1px solid var(--line);padding:22px 14px}.side small{color:#a4969f;font-weight:bold;margin-left:10px}.nav{margin-top:12px}.nav button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;text-align:left;padding:12px 13px;margin:5px 0;border-radius:10px;color:#6d5f69}.nav button.active,.nav button:hover{background:#f7e8f0;color:var(--primary);font-weight:bold}
+.main{flex:1;padding:34px 5%;max-width:1350px}.page{display:none}.page.active{display:block}h1{margin:0 0 7px;font-size:28px}.sub{color:var(--muted);margin:0 0 25px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px}.card,.box,.form{background:#fff;border:1px solid var(--line);border-radius:16px}.card{padding:20px}.card .label{font-size:13px;color:var(--muted)}.num{font-size:30px;font-weight:800;margin-top:8px;color:var(--primary)}
+.box{overflow:hidden}.head{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;border-bottom:1px solid var(--line)}table{width:100%;border-collapse:collapse}th,td{padding:14px 17px;text-align:left;border-bottom:1px solid #f0e8ed;font-size:14px}th{font-size:12px;color:var(--muted);background:#fffafd}
+.status{padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block}.processing{background:#fff4df;color:#a15c00}.ready{background:#f4e9ff;color:#6a238b}.completed,.paid{background:#eaf8ef;color:#16723a}
+.form{max-width:850px;padding:25px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.role{padding:25px;text-align:center}.icon{width:56px;height:56px;border-radius:16px;background:#f7e8f0;color:var(--primary);margin:auto;display:grid;place-items:center;font-size:24px}.role h3{margin:14px 0 5px}.role p{font-size:13px;color:var(--muted);line-height:1.5;min-height:40px}
+.empty{text-align:center;color:var(--muted);padding:30px}.note{font-size:12px;color:var(--muted);margin-top:8px}
+.footer{font-size:12px;color:var(--muted);text-align:center;padding:22px}
+@media(max-width:850px){.layout{display:block}.side{width:100%;border-right:0;border-bottom:1px solid var(--line);padding:12px}.nav{display:flex;overflow:auto;margin:0}.nav button{white-space:nowrap;width:auto}.cards,.roles,.grid{grid-template-columns:1fr}.main{padding:25px 4%}.user{font-size:12px}table{min-width:600px}.box{overflow:auto}}
+</style>
+</head>
+<body>
+<div id="loginPage">
+ <div class="login">
+  <div class="brand">Print<span>Ease</span></div>
+  <h2 id="authTitle">Welcome Back</h2>
+  <p id="authSub">Login to manage your printing orders.</p>
+  <div id="authMsg"></div>
+  <div class="field"><label>Username</label><input id="authUser" placeholder="Enter username"></div>
+  <div class="field"><label>Password</label><input id="authPass" type="password" placeholder="Enter password"></div>
+  <button class="btn primary full" onclick="submitAuth()">Login</button>
+  <p id="authSwitch">Don't have an account? <a href="#" onclick="toggleRegister();return false">Create one</a></p>
+  <p class="note">Demo account: <b>admin / admin</b></p>
+ </div>
+</div>
+
+<div id="app" class="app hidden">
+<header class="top">
+ <div class="logo">Print<span>Ease</span></div>
+ <div class="user">👤 <b id="currentUser">Customer</b> &nbsp;|&nbsp; <a href="#" onclick="logout();return false">Logout</a></div>
+</header>
+<div class="layout">
+<aside class="side"><small>MENU</small><div class="nav">
+ <button class="active" data-page="dashboard">⌂ Dashboard</button>
+ <button data-page="roles">👥 User Type</button>
+ <button data-page="order">🖨 New Print Order</button>
+ <button data-page="orders">📋 My Orders</button>
+ <button data-page="transactions">💳 Transactions</button>
+ <button data-page="profile">⚙ Profile</button>
+</div></aside>
+
+<main class="main">
+<section id="dashboard" class="page active">
+ <h1>Dashboard</h1><p class="sub">Manage your printing orders and transactions in one place.</p>
+ <div class="cards">
+  <div class="card"><div class="label">Active Orders</div><div class="num" id="activeCount">0</div></div>
+  <div class="card"><div class="label">Completed Orders</div><div class="num" id="completedCount">0</div></div>
+  <div class="card"><div class="label">Transactions</div><div class="num" id="transactionCount">0</div></div>
+ </div>
+ <div class="box"><div class="head"><b>Recent Orders</b><button class="btn primary" onclick="showPage('order')">+ New Order</button></div>
+ <table><thead><tr><th>Order ID</th><th>Type</th><th>Copies</th><th>Status</th></tr></thead><tbody id="recentTable"></tbody></table></div>
+</section>
+
+<section id="roles" class="page">
+ <h1>Select User Type</h1><p class="sub">Choose what you want to manage in this session.</p>
+ <div class="roles">
+  <div class="box role"><div class="icon">👤</div><h3>Customer</h3><p>Create printing orders and track requests.</p><button class="btn primary" onclick="setRole('Customer')">Continue</button></div>
+  <div class="box role"><div class="icon">🛠</div><h3>Admin</h3><p>View and update the status of printing orders.</p><button class="btn primary" onclick="setRole('Admin')">Continue</button></div>
+  <div class="box role"><div class="icon">✓</div><h3>Transactor</h3><p>Check completed orders and transaction records.</p><button class="btn primary" onclick="setRole('Transactor')">Continue</button></div>
+ </div>
+</section>
+
+<section id="order" class="page">
+ <h1>Create Printing Order</h1><p class="sub">Fill out the printing details below.</p>
+ <div class="form"><div class="grid">
+  <div class="field"><label>Print Type</label><select id="type"><option>Document</option><option>Poster</option><option>Photo</option><option>Tarpaulin</option><option>Other</option></select></div>
+  <div class="field"><label>Number of Copies</label><input id="copies" type="number" min="1" value="1"></div>
+  <div class="field"><label>Paper Size</label><select id="size"><option>A4</option><option>Letter</option><option>A3</option><option>Legal</option></select></div>
+  <div class="field"><label>Color</label><select id="color"><option>Black & White</option><option>Colored</option></select></div>
+ </div>
+ <div class="field"><label>Upload File</label><input id="file" type="file"><div class="note">File name is stored for reference in this demo.</div></div>
+ <div class="field"><label>Notes / Instructions</label><textarea id="notes" placeholder="Optional printing instructions..."></textarea></div>
+ <div class="actions"><button class="btn primary" onclick="submitOrder()">Submit Order</button><button class="btn" onclick="showPage('dashboard')">Cancel</button></div>
+ </div>
+</section>
+
+<section id="orders" class="page">
+ <h1>My Orders</h1><p class="sub">Track the current status of your printing requests.</p>
+ <div class="box"><table><thead><tr><th>Order ID</th><th>Type</th><th>Copies</th><th>Status</th><th>Action</th></tr></thead><tbody id="ordersTable"></tbody></table></div>
+</section>
+
+<section id="transactions" class="page">
+ <h1>Transactions</h1><p class="sub">Completed orders automatically appear here.</p>
+ <div class="box"><table><thead><tr><th>Transaction ID</th><th>Order ID</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transTable"></tbody></table></div>
+</section>
+
+<section id="profile" class="page">
+ <h1>Profile</h1><p class="sub">Update your basic account information.</p>
+ <div class="form">
+  <div class="field"><label>Username</label><input id="profileUser"></div>
+  <div class="field"><label>Full Name</label><input id="profileName" placeholder="Enter full name"></div>
+  <div class="field"><label>Contact Number</label><input id="profileContact" placeholder="09XX XXX XXXX"></div>
+  <button class="btn primary" onclick="saveProfile()">Save Changes</button>
+ </div>
+</section>
+<div class="footer">© 2026 PrintEase — Printing Orders and Transaction Management System</div>
+</main></div></div>
+
+<script>
+let registering=false;
+let orders=JSON.parse(localStorage.getItem('printEaseOrders')||'[]');
+let transactions=JSON.parse(localStorage.getItem('printEaseTransactions')||'[]');
+let users=JSON.parse(localStorage.getItem('printEaseUsers')||'[]');
+let profiles=JSON.parse(localStorage.getItem('printEaseProfiles')||'{}');
+let currentUser=localStorage.getItem('printEaseCurrent')||'';
+
+function toggleRegister(){
+ registering=!registering;
+ authTitle.textContent=registering?'Create Account':'Welcome Back';
+ authSub.textContent=registering?'Create your PrintEase account.':'Login to manage your printing orders.';
+ document.querySelector('#loginPage button').textContent=registering?'Create Account':'Login';
+ authSwitch.innerHTML=registering?'Already have an account? <a href="#" onclick="toggleRegister();return false">Login</a>':'Don\\'t have an account? <a href="#" onclick="toggleRegister();return false">Create one</a>';
+ authMsg.innerHTML='';
+}
+function msg(t,type='error'){authMsg.innerHTML='<div class="msg '+type+'">'+t+'</div>'}
+function submitAuth(){
+ const u=authUser.value.trim(),p=authPass.value.trim();
+ if(!u||!p){msg('Please enter username and password.');return}
+ if(registering){
+  if(users.some(x=>x.u===u)){msg('Username already exists.');return}
+  users.push({u,p});localStorage.setItem('printEaseUsers',JSON.stringify(users));
+  msg('Account created successfully. You can now login.','success');toggleRegister();return;
+ }
+ const valid=(users.length===0&&u==='admin'&&p==='admin')||users.some(x=>x.u===u&&x.p===p);
+ if(!valid){msg('Invalid username or password.');return}
+ currentUser=u;localStorage.setItem('printEaseCurrent',u);openApp();
+}
+function openApp(){
+ loginPage.classList.add('hidden');app.classList.remove('hidden');currentUser=document.getElementById('currentUser').textContent=localStorage.getItem('printEaseCurrent');
+ profileUser.value=currentUser;loadProfile();render();
+}
+function logout(){localStorage.removeItem('printEaseCurrent');currentUser='';app.classList.add('hidden');loginPage.classList.remove('hidden')}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));render()}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+function save(){localStorage.setItem('printEaseOrders',JSON.stringify(orders));localStorage.setItem('printEaseTransactions',JSON.stringify(transactions))}
+function submitOrder(){
+ const copies=Math.max(1,parseInt(document.getElementById('copies').value)||1);
+ const id='PE-'+String(Date.now()).slice(-6), file=document.getElementById('file').files[0];
+ orders.unshift({id,type:type.value,copies,status:'Processing',owner:currentUser,size:size.value,color:color.value,file:file?file.name:'No file',notes:notes.value});
+ save();alert('Order '+id+' submitted successfully!');showPage('orders');
+}
+function updateStatus(index){
+ if(orders[index].status==='Completed')return;
+ if(orders[index].status==='Processing')orders[index].status='Ready';
+ else if(orders[index].status==='Ready'){
+  orders[index].status='Completed';
+  const rate=orders[index].color==='Colored'?15:5;
+  transactions.unshift({id:'TX-'+String(Date.now()).slice(-6),order:orders[index].id,type:orders[index].type,amount:(orders[index].copies*rate).toFixed(2),status:'Paid'});
+ }
+ save();render();
+}
+function setRole(role){document.getElementById('currentUser').textContent=currentUser+' ('+role+')';if(role==='Customer')showPage('order');else if(role==='Admin')showPage('orders');else showPage('transactions')}
+function saveProfile(){
+ const newU=profileUser.value.trim();if(!newU)return alert('Username cannot be empty.');
+ profiles[newU]={name:profileName.value.trim(),contact:profileContact.value.trim()};
+ localStorage.setItem('printEaseProfiles',JSON.stringify(profiles));
+ if(newU!==currentUser){currentUser=newU;localStorage.setItem('printEaseCurrent',newU)}
+ document.getElementById('currentUser').textContent=currentUser;alert('Profile updated successfully!');
+}
+function loadProfile(){const p=profiles[currentUser]||{};profileName.value=p.name||'';profileContact.value=p.contact||''}
+function status(s){return '<span class="status '+s.toLowerCase()+'">'+s+'</span>'}
+function render(){
+ const mine=orders.filter(o=>!o.owner||o.owner===currentUser);
+ activeCount.textContent=mine.filter(o=>o.status!=='Completed').length;
+ completedCount.textContent=mine.filter(o=>o.status==='Completed').length;
+ transactionCount.textContent=transactions.length;
+ recentTable.innerHTML=mine.length?mine.slice(0,5).map(o=>`<tr><td>${o.id}</td><td>${o.type}</td><td>${o.copies}</td><td>${status(o.status)}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">No orders yet.</td></tr>';
+ ordersTable.innerHTML=mine.length?mine.map(o=>`<tr><td>${o.id}</td><td>${o.type}</td><td>${o.copies}</td><td>${status(o.status)}</td><td><button class="btn" onclick="updateStatus(${orders.indexOf(o)})">${o.status==='Completed'?'Completed':'Update Status'}</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No orders yet.</td></tr>';
+ transTable.innerHTML=transactions.length?transactions.map(t=>`<tr><td>${t.id}</td><td>${t.order}</td><td>${t.type}</td><td>₱${t.amount}</td><td>${status(t.status)}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">No transactions yet.</td></tr>';
+}
+if(currentUser)openApp();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body></html>
