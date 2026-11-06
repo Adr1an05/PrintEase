@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmallBiz Builder</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<section id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="brand"><div class="brand-icon">🏪</div><div><h1>SmallBiz Builder</h1><p>Digital Presence + Simple Analytics</p></div></div>
+    <div class="tabs"><button class="tab active" data-auth="login">Login</button><button class="tab" data-auth="register">Register</button></div>
+    <form id="authForm">
+      <label id="nameLabel" class="hidden">Business Owner Name</label>
+      <input id="ownerName" class="hidden" placeholder="Juan Dela Cruz">
+      <label>Email / Username</label>
+      <input id="email" type="text" placeholder="owner@example.com" required>
+      <label>Password</label>
+      <input id="password" type="password" placeholder="••••••••" required>
+      <button class="primary wide" type="submit" id="authButton">Login</button>
+    </form>
+    <p class="prototype">Prototype UI • Data is saved in this browser.</p>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-logo">🏪</div>
+    <button class="nav-btn active" data-page="dashboard" title="Dashboard">🏠</button>
+    <button class="nav-btn" data-page="profile" title="Business Profile">🏪</button>
+    <button class="nav-btn" data-page="website" title="Website Builder">🌐</button>
+    <button class="nav-btn" data-page="analytics" title="Analytics">📊</button>
+    <button class="nav-btn" data-page="messages" title="Messages">💬</button>
+    <button class="nav-btn" data-page="settings" title="Settings">⚙️</button>
+    <button class="nav-btn logout" id="logoutBtn" title="Logout">↪</button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><h1 id="pageTitle">Dashboard</h1><p>Build your online presence and understand your audience.</p></div>
+      <div class="avatar" id="avatar">BO</div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="dashboard">
+      <div class="stats">
+        <div class="stat-card"><div><span>Total Visitors</span><strong id="visitors">1,248</strong><small>+12% this week</small></div><b>👥</b></div>
+        <div class="stat-card"><div><span>Page Views</span><strong id="views">2,864</strong><small>+18% this week</small></div><b>👁️</b></div>
+        <div class="stat-card"><div><span>Messages</span><strong>36</strong><small>8 new inquiries</small></div><b>💬</b></div>
+        <div class="stat-card"><div><span>Profile Score</span><strong id="score">82%</strong><small>Almost complete</small></div><b>⭐</b></div>
+      </div>
+
+      <div class="panel">
+        <h2>Quick Actions</h2>
+        <button class="action" data-go="profile"><span>🏪</span><div><b>Update Business</b><small>Edit business information.</small></div></button>
+        <button class="action" data-go="website"><span>🌐</span><div><b>Build Website</b><small>Customize your page.</small></div></button>
+        <button class="action" data-go="analytics"><span>📊</span><div><b>View Analytics</b><small>Check visitors and views.</small></div></button>
+        <button class="action" data-go="messages"><span>💬</span><div><b>Customer Messages</b><small>Respond to inquiries.</small></div></button>
+      </div>
+
+      <div class="panel">
+        <h2>Business Presence — <span id="presenceText">82%</span></h2>
+        <p>Complete your profile to improve your online presence.</p>
+        <div class="progress"><i id="progressBar"></i></div>
+        <small id="presenceInfo">Logo ✓ &nbsp; Info ✓ &nbsp; Photos ✓ &nbsp; Website 70%</small>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="page" id="profile">
+      <div class="panel form-panel">
+        <div class="panel-head"><h2>Business Profile Setup / Management</h2><button class="primary" id="saveProfile">Save Changes</button></div>
+        <label>Business Name</label><input id="businessName" value="Juan's Coffee Shop">
+        <label>Category</label>
+        <select id="category"><option>Coffee Shop</option><option>Modern Store</option><option>Local Services</option><option>Restaurant</option><option>Other</option></select>
+        <label>Location</label><input id="location" value="Quezon City, Philippines">
+        <label>Contact Number</label><input id="contact" value="+63 912 345 6789">
+        <label>Description</label><textarea id="description">A local coffee shop serving fresh coffee and snacks.</textarea>
+        <label>Business Images</label>
+        <label class="upload-box">📷<br><b>Upload Logo / Photos / Gallery</b><small>Choose images here</small><input id="images" type="file" accept="image/*" multiple></label>
+        <div id="imagePreview" class="image-preview"></div>
+      </div>
+    </section>
+
+    <!-- WEBSITE -->
+    <section class="page" id="website">
+      <div class="panel">
+        <h2>Templates</h2>
+        <button class="template selected" data-template="Coffee House">☕ Coffee House</button>
+        <button class="template" data-template="Modern Store">🛍️ Modern Store</button>
+        <button class="template" data-template="Local Services">🔧 Local Services</button>
+      </div>
+      <div class="panel form-panel">
+        <h2>Customize</h2>
+        <label>Website Title</label><input id="websiteTitle" value="Juan's Coffee Shop">
+        <label>Tagline</label><input id="tagline" value="Fresh coffee. Local flavor.">
+        <button class="primary wide" id="publishBtn">Publish / Update</button>
+      </div>
+      <div class="preview-wrap">
+        <div class="preview-top">☕ <b id="previewSmall">Juan's Coffee Shop</b></div>
+        <div class="website-preview">
+          <h1 id="previewTitle">Juan's Coffee Shop</h1>
+          <p id="previewTagline">Fresh coffee. Local flavor.</p>
+          <button>Contact Us</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section class="page" id="analytics">
+      <div class="panel"><h2>Visitor Overview <em>+12%</em></h2>
+        <div class="chart" id="chart">
+          <div style="height:45%"><span>Mon</span></div><div style="height:62%"><span>Tue</span></div><div style="height:51%"><span>Wed</span></div><div style="height:78%"><span>Thu</span></div><div style="height:68%"><span>Fri</span></div><div style="height:92%"><span>Sat</span></div><div style="height:74%"><span>Sun</span></div>
+        </div>
+      </div>
+      <div class="panel"><h2>Audience Insights</h2>
+        <div class="insight">📍 <div><b>Location</b><br>Most visitors are from Quezon City.</div></div>
+        <div class="insight">👥 <div><b>Age Range</b><br>Most active audience: 18–34.</div></div>
+        <div class="insight">⭐ <div><b>Popular Content</b><br>Services page gets most views.</div></div>
+      </div>
+      <div class="panel"><h2>Popular Pages</h2>
+        <table><thead><tr><th>Page</th><th>Views</th><th>Engagement</th></tr></thead>
+        <tbody><tr><td>Home</td><td>1,204</td><td>78%</td></tr><tr><td>Services</td><td>924</td><td>84%</td></tr><tr><td>About</td><td>436</td><td>61%</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section class="page" id="messages">
+      <div class="panel"><h2>Customer Messages / Inquiries</h2>
+        <div class="message"><b>Maria Santos</b><span>New</span><p>Hi! Are you open on Sunday?</p><small>10 minutes ago</small><button class="reply">Reply</button></div>
+        <div class="message"><b>Mark Reyes</b><span>New</span><p>Can I ask for your menu and prices?</p><small>1 hour ago</small><button class="reply">Reply</button></div>
+        <div class="message"><b>Ana Cruz</b><span>Read</span><p>Thank you for the quick response!</p><small>Yesterday</small><button class="reply">Reply</button></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="settings">
+      <div class="panel settings">
+        <h2>Settings</h2>
+        <div class="setting"><div><b>Notifications</b><p>Receive inquiry alerts.</p></div><label class="switch"><input type="checkbox" checked><i></i></label></div>
+        <div class="setting"><div><b>Public Business Page</b><p>Allow customers to view your page.</p></div><label class="switch"><input type="checkbox" checked><i></i></label></div>
+        <div class="setting"><div><b>Dark Mode</b><p>Change dashboard appearance.</p></div><label class="switch"><input id="darkMode" type="checkbox"><i></i></label></div>
+        <div class="setting"><div><b>Language</b><p>Preferred language.</p></div><select id="language"><option>English</option><option>Filipino</option></select></div>
+      </div>
+    </section>
+  </main>
+</section>
+
+<div id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
